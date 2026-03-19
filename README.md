@@ -1,5 +1,7 @@
 # Exploring the potential of ML/DL for Alzheimer's detection  
 
+# Study characteristics
+
 ## **Abstract**
 Alzheimer's disease (AD) is a Neurodegenerative disorder that affects millions of individuals around the globe. Early diagnosis of Alzheimer's disease is essential for prompt intervention and enhanced patient outcomes. In this study, the efficacy of various machine learning (ML) models for AD detection is investigated. We utilized linear models such as logistic regression, tree-based models such as random forest classifier (RFC) and decision tree classifier (DTC), probabilistic models, non-linear models such as support vector machines (SVM), and an ensemble model that combines the best of all the above models. In addition to traditional machine learning methods, we deployed a neural network model based on Few Shot Learning. Few-shot learning is distinguished by its capacity to learn new concepts or tasks with limited training data. It simulates human-like learning, in which humans can rapidly comprehend new information or identify new objects with only a few examples. Few-shot learning paves the way for more efficient and adaptable artificial intelligence systems that can quickly adapt to new environments or changing user needs especially in medical imaging, in which it can aid in the detection of rare diseases where labeled samples are scarce.
 
@@ -46,34 +48,40 @@ Siamese Network Dissimilarity Scores
 
 ---
 
-## Repository Strucuture
+# Respository Usage Guide
 
-### File tree
+
+## File tree
+
 ```
 alzheimers-detection-methodologies-organized
 ┃
 ┣ 📜 README.md (you are here!)
 ┃
 ┣ 📦 data
-┃ ┣ test_augmented.csv
-┃ ┣ train_augmented.csv
-┃ ┣ dataset_non_augmented.zip
-┃ ┗ DataBase
-┃   ┣ SETA  (Saudável, olhos abertos)
-┃   ┣ SETB  (Saudável, olhos fechados)
-┃   ┣ SETC  (Alzheimer, olhos abertos)
-┃   ┗ SETD  (Alzheimer, olhos fechados)
+┃ ┣ raw
+┃ ┃ ┣ dataset_non_augmented.zip
+┃ ┃ ┗ DataBase 
+┃ ┃   ┣ SETA
+┃ ┃   ┣ SETB
+┃ ┃   ┣ SETC
+┃ ┃   ┗ SETD
+┃ ┗ processed
+┃   ┣ train_augmented.csv
+┃   ┗ test_augmented.csv
 ┃
-┣ 📓 Notebooks
+┣ 📓 notebooks
 ┃ ┣ few_shot_similarity_nn
-┃ ┃ ┣ model.py
-┃ ┃ ┣ weights_for_fewshot
-┃ ┃ ┣ FewShotLearning_Similaritybased_DataPreprocessing.ipynb
-┃ ┃ ┣ FewShotLearning_Similaity_testing.ipynb
-┃ ┃ ┗ FewShotLearning_Similarity_Model_train.ipynb
+┃ ┃ ┣ 01_FewShotLearning_Similaritybased_DataPreprocessing.ipynb
+┃ ┃ ┣ 02_FewShotLearning_Similarity_Model_train.ipynb
+┃ ┃ ┗ 03_FewShotLearning_Similaity_testing.ipynb
 ┃ ┗ ml_based_models
-┃   ┣ AlzheimerDetection_Data_Preprocessing.ipynb
-┃   ┗ AlzheimersDetection_ML_Models.ipynb
+┃   ┣ 01_AlzheimerDetection_Data_Preprocessing.ipynb
+┃   ┗ 02_AlzheimersDetection_ML_Models.ipynb
+┃
+┣ 🤖 model
+┃ ┣ model.py
+┃ ┗ weights_for_fewshot
 ┃
 ┗ 🖼️ results
   ┣ fewshot_model_arch.jpg
@@ -82,23 +90,75 @@ alzheimers-detection-methodologies-organized
   ┗ results_ml_models.jpg
 ```
 
+---
+
+## Structure Explanation
+
+1. **`data/`**: The core data directory of the project. It is now divided into two subdirectories to separate original and modified files, ensuring data integrity.
+   - **`raw/`**: Contains the original, dataset. It includes the compressed [`dataset_non_augmented.zip`](data/raw/dataset_non_augmented.zip) and the `DataBase` folder (the extraction of the .zip). The EEG (Electroencephalogram) data is divided into 4 specific sets:
+     - **SETA**: Healthy patients with open eyes.
+     - **SETB**: Healthy patients with closed eyes.
+     - **SETC**: Alzheimer's patients with open eyes.
+     - **SETD**: Alzheimer's patients with closed eyes.
+   - **`processed/`**: Stores the data after it has been cleaned, transformed, and artificially augmented. Includes the final tabular data used to train and evaluate the models ([`train_augmented.csv`](data/processed/train_augmented.csv) and [`test_augmented.csv`](data/processed/test_augmented.csv)).
+
+2. **`notebooks/`**: Contains all the Jupyter Notebooks used for exploration, preprocessing, and execution. The files are numbered to indicate the exact execution order:
+   - [**`few_shot_similarity_nn/`**](notebooks/few_shot_similarity_nn): Focuses on the Few-Shot Learning approach using Deep Neural Networks. It guides the user step-by-step through data preprocessing (01), model training (02), and final similarity-based testing (03).
+   - [**`ml_based_models/`**](notebooks/ml_based_models): Dedicated to traditional Machine Learning algorithms (like Random Forest, SVM, etc.). Contains notebooks to prepare the tabular data (01) and to train/evaluate these classical models (02).
+
+3. **`model/`**: A dedicated folder that isolates the core deep learning architecture (Few Shot Learning) from the experimental notebooks, making the code more modular and reusable.
+   - [**`model.py`**](model/model.py): The raw Python script that defines the underlying architecture of the Neural Network (using a Siamese Network approach to calculate similarity).
+   - [**`weights_for_fewshot`**](model/weights_for_fewshot) ⚠️: Contains a reference/link to the pre-trained weights of the model. This allows new users to load the "knowledge" of the network directly into the testing notebook without needing to retrain it from scratch.
+
+4. **`results/` (Outputs and Visualizations)**: A folder dedicated to storing the visual outputs and metrics generated during the experiments. It includes architectural diagrams of the neural network ([`fewshot_model_arch.jpg`](results/fewshot_model_arch.jpg)) and charts comparing the performance, accuracy, and confusion matrices of the different tested approaches.
 
 
-### Explicação da Estrutura
+---
 
-1. **data/ (Dados)**: É o núcleo de dados do projeto. Contém as bases de dados brutas e processadas.
-   - Possui ficheiros CSV de dados já aumentados artificialmente (train_augmented.csv e test_augmented.csv).
-   - Contém a pasta DataBase/ (e uma versão em .zip), que divide os dados de eletroencefalograma (EEG) em 4 conjuntos:
-     - SETA: Pacientes saudáveis com olhos abertos.
-     - SETB: Pacientes saudáveis com olhos fechados.
-     - SETC: Pacientes com Alzheimer com olhos abertos.
-     - SETD: Pacientes com Alzheimer com olhos fechados.
+## Workflow
 
-2. **Notebooks/ (Código e Ensaios)**: Contém todo o código Python, organizado pelas duas metodologias abordadas no projeto:
-   - few_shot_similarity_nn/: Focado na abordagem de Few-Shot Learning usando Redes Neuronais. Contém os notebooks de pré-processamento, treino, teste, o script do modelo (model.py) e os pesos do modelo já treinado (weights_for_fewshot).
-   - ml_based_models/: Focado em modelos tradicionais de Machine Learning. Contém notebooks para preparar os dados e treinar/avaliar os modelos.
+```mermaid
+graph TD
+    A[Step 1: Raw Data Preparation] --> B{Step 2: Choose Methodology}
+    
+    B -->|Path A: Few-Shot NN| C1[Preprocessing]
+    C1 --> C2[Train or Load Model]
+    C2 --> C3[Evaluation]
+    
+    B -->|Path B: Classical ML| D1[Feature Extraction]
+    D1 --> D2[Train & Evaluate Models]
+    
+    C3 --> E[Step 3: Save Results]
+    D2 --> E
+```
 
-3. **results/ (Resultados)**: Uma pasta dedicada a armazenar as saídas visuais do projeto, como diagramas da arquitetura do modelo (fewshot_model_arch.jpg) e gráficos comparativos de desempenho das diferentes abordagens.
+### Step 1: Acquisition and Preparation of Raw Data
+1. The user clones the repository to their local machine or Google Colab.
+2. Access the `data/raw/` folder and unzip the `dataset_non_augmented.zip` file.
+3. Explore the `database/` folder to understand the original electroencephalogram (EEG) signals separated by the 4 sets (SETA to SETD).
 
-4. **README.md**: O ficheiro principal na raiz do projeto contendo a documentação e instruções gerais.
+### Step 2: Choosing the Methodology
+The project is divided into two distinct approaches. The user must choose which path to follow (or test both for comparison).
 
+
+>Path A: Neural Networks Approach (Few-Shot Learning)
+
+If the goal is to use similarity-based Artificial Intelligence:
+
+* **Preprocessing:** Open and run the notebook `notebooks/few_shot_similarity_nn/01_FewShotLearning_Similaritybased_DataPreprocessing.ipynb`. This script will read the original data, create similarity pairs, and save the processed data in the `data/processed/` folder.
+* **Training or Loading:** * *Option 1 (Train from scratch):* Run the `02_FewShotLearning_Similarity_Model_train.ipynb` notebook. The code will import the architecture from the `model/model.py` file, train the network with the processed data, and generate new weights.
+    * *Option 2 (Use the pre-trained model):* The user opens the `model/weights_for_fewshot` file, accesses the Google Drive link, downloads the pre-trained weights, and saves hours of computation.
+* **Evaluation:** Run the `03_FewShotLearning_Similaity_testing.ipynb` notebook, applying the model to the test data (which the AI has never seen) to obtain the final metrics.
+
+
+>Path B: Classical Machine Learning Approach
+
+If the goal is to use traditional statistical algorithms (such as Random Forest or SVM):
+
+* **Phase 1 (Feature Extraction):** Run the notebook `notebooks/ml_based_models/01_AlzheimerDetection_Data_Preprocessing.ipynb`. This script cleans the raw data and uses techniques like PCA (Principal Component Analysis) to extract essential features, saving the resulting tabular files in the `data/processed/` folder.
+* **Phase 2 (Training and Multiple Evaluation):** Run the `02_AlzheimersDetection_ML_Models.ipynb` notebook. The script will load the processed CSV files, simultaneously train several classical Machine Learning models, and present the confusion matrices and accuracy of each at the end.
+
+
+
+### Step 3: Analysis and Recording of Results
+Regardless of the chosen path, the final step is to compile the charts generated by the notebooks (such as the architecture diagram, performance charts, and comparative tables) and save them in the `results/` folder. 

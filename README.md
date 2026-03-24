@@ -146,7 +146,7 @@ The project is divided into two distinct approaches. The user must choose which 
 If the goal is to use similarity-based Artificial Intelligence:
 
 * **Preprocessing:** Open and run the notebook `notebooks/few_shot_similarity_nn/01_FewShotLearning_Similaritybased_DataPreprocessing.ipynb`. This script will read the original data, create similarity pairs, and save the processed data in the `data/processed/` folder.
-* **Training or Loading:** * *Option 1 (Train from scratch):* Run the `02_FewShotLearning_Similarity_Model_train.ipynb` notebook. The code will import the architecture from the `model/model.py` file, train the network with the processed data, and generate new weights.
+* **Training or Loading:** *Option 1 (Train from scratch):* Run the `02_FewShotLearning_Similarity_Model_train.ipynb` notebook. The code will import the architecture from the `model/model.py` file, train the network with the processed data, and generate new weights.
     * *Option 2 (Use the pre-trained model):* The user opens the `model/weights_for_fewshot` file, accesses the Google Drive link, downloads the pre-trained weights, and saves hours of computation.
 * **Evaluation:** Run the `03_FewShotLearning_Similaity_testing.ipynb` notebook, applying the model to the test data (which the AI has never seen) to obtain the final metrics.
 
